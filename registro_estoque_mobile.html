@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Registro Estoque — Silvicultura</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0f1a;--s1:#111827;--s2:#1a2234;--s3:#222d42;--ac:#22d3ee;--ac2:#06b6d4;--w:#f59e0b;--d:#ef4444;--g:#10b981;--p:#a78bfa;--tx:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--bd:#1e293b}
+html{height:100%}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100%;-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--s1)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+.hdr{background:linear-gradient(135deg,#0f172a,#1e1b4b 50%,#0f172a);border-bottom:1px solid var(--bd);padding:14px 16px;position:sticky;top:0;z-index:100}
+.hdr-top{display:flex;align-items:center;justify-content:space-between}
+.hdr h1{font-family:'Space Mono',monospace;font-size:13px;color:var(--ac);letter-spacing:2px}
+.hdr .sub{font-size:9px;color:var(--t3);letter-spacing:1px;margin-top:2px}
+.season-tag{display:inline-block;padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;letter-spacing:.5px;margin-left:3px}
+.st-rain{background:rgba(59,130,246,.2);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+.st-pest{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.st-plant{background:rgba(16,185,129,.2);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+.st-maint{background:rgba(245,158,11,.2);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+.mn{padding:12px 12px 150px}
+.div-sel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.div-btn{padding:14px 8px;border-radius:10px;border:2px solid var(--bd);background:var(--s1);text-align:center;cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+.div-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--bd);transition:.3s}
+.div-btn.on{border-color:var(--ac);background:rgba(34,211,238,.06)}.div-btn.on::before{background:var(--ac)}
+.div-btn .dv-name{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--t2);letter-spacing:1px}.div-btn.on .dv-name{color:var(--ac)}
+.div-btn .dv-loc{font-size:9px;color:var(--t3);margin-top:2px}
+.date-bar{display:flex;gap:8px;align-items:center;margin-bottom:8px;padding:10px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:9px}
+.date-bar label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);font-weight:600}
+.date-inp{flex:1;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:8px 10px;border-radius:6px;font-size:13px;font-family:'Space Mono',monospace;outline:0;-webkit-appearance:none}.date-inp:focus{border-color:var(--ac)}
+.date-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:7px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#fbbf24;display:none}
+.date-warn.show{display:block}
+.st2{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--ac);margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid var(--bd)}
+.search-bar{position:relative;margin-bottom:10px}
+.search-bar input{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:10px 12px;border-radius:8px;font-size:12px;font-family:'DM Sans';outline:0}.search-bar input:focus{border-color:var(--ac)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.stat{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:8px;text-align:center;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat.s-c::before{background:var(--ac)}.stat.s-g::before{background:var(--g)}.stat.s-p::before{background:var(--p)}
+.stat-v{font-family:'Space Mono',monospace;font-size:18px;font-weight:700}
+.stat.s-c .stat-v{color:var(--ac)}.stat.s-g .stat-v{color:var(--g)}.stat.s-p .stat-v{color:var(--p)}
+.stat-l{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-top:1px}
+.grp-hdr{font-family:'Space Mono',monospace;font-size:9px;color:var(--ac);letter-spacing:1px;text-transform:uppercase;margin:10px 0 4px;padding:3px 0;border-bottom:1px solid var(--bd)}
+.mat-grid{display:grid;grid-template-columns:1fr;gap:5px;margin-bottom:16px}
+.mat-card{background:var(--s1);border:1px solid var(--bd);border-radius:9px;padding:8px 10px;display:flex;align-items:center;gap:8px;transition:.2s}
+.mat-card.checked{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.03)}
+.mat-chk{width:20px;height:20px;border-radius:5px;border:2px solid var(--bd);background:var(--s2);cursor:pointer;flex-shrink:0;accent-color:var(--g)}
+.mat-info{flex:1;min-width:0}
+.mat-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mat-meta{display:flex;gap:4px;align-items:center;margin-top:2px;flex-wrap:wrap}
+.sap{font-family:'Space Mono',monospace;font-size:9px;color:var(--p);background:rgba(167,139,250,.1);padding:1px 5px;border-radius:3px}
+.mat-unit{font-size:8px;color:var(--t3);font-weight:600}
+.grp-sel{background:var(--s2);border:1px solid var(--bd);color:var(--t2);padding:2px 4px;border-radius:4px;font-size:8px;font-family:'DM Sans';outline:0;max-width:110px}
+.mat-input{width:75px;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:7px 5px;border-radius:7px;font-family:'Space Mono',monospace;font-size:13px;text-align:right;outline:0;-webkit-appearance:none;flex-shrink:0}
+.mat-input:focus{border-color:var(--ac)}
+.mat-input.filled{border-color:rgba(34,211,238,.4);color:var(--ac)}
+.add-bar{background:var(--s1);border:1px dashed var(--bd);border-radius:9px;padding:10px;margin-bottom:12px;cursor:pointer;text-align:center;color:var(--ac);font-size:11px;font-weight:600;transition:.2s}
+.add-bar:hover{border-color:var(--ac)}
+.bot-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:10px 12px 16px;z-index:90}
+.bot-inner{display:flex;gap:8px;flex-direction:column}
+.btn{padding:12px 16px;border:none;border-radius:9px;font-family:'DM Sans';font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;letter-spacing:.5px;width:100%}
+.b-send{background:var(--ac);color:var(--bg)}.b-send:active{transform:scale(.97)}.b-send:disabled{opacity:.3;cursor:not-allowed}
+.b-whats{background:rgba(37,211,102,.15);color:#25d366;border:1px solid rgba(37,211,102,.3)}.b-whats:active{transform:scale(.97)}.b-whats:disabled{opacity:.3;cursor:not-allowed}
+.btn-row{display:flex;gap:8px}
+.b-clear{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.2);padding:12px;min-width:44px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:700}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--g);color:#fff;padding:10px 20px;border-radius:9px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:.4s;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.sh{transform:translateX(-50%) translateY(0);opacity:1}.toast.err{background:var(--d)}.toast.wrn{background:var(--w);color:var(--bg)}
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.mbg.open{display:flex}
+.mdl{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px;max-width:400px;width:92%;max-height:85vh;overflow-y:auto}
+.mdl h3{font-family:'Space Mono',monospace;color:var(--ac);font-size:13px;margin-bottom:12px}
+.mc{float:right;background:0;border:0;color:var(--t3);cursor:pointer;font-size:18px;padding:4px}
+.fg{margin-bottom:10px}.fl{display:block;font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:3px;font-weight:600}
+.fi{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx);padding:8px 10px;border-radius:7px;font-size:11px;font-family:'DM Sans';outline:0}.fi:focus{border-color:var(--ac)}
+.btn-sm{padding:8px 14px;border:none;border-radius:7px;font-family:'DM Sans';font-size:11px;font-weight:600;cursor:pointer}
+.btn-ac{background:var(--ac);color:var(--bg)}.btn-sec{background:var(--s2);border:1px solid var(--bd);color:var(--t2)}
+.sig{text-align:center;padding:14px;font-size:9px;color:var(--t3)}.sig span{color:var(--ac);font-weight:600}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--bg);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,26,.9);z-index:250;align-items:center;justify-content:center;flex-direction:column}.success-overlay.show{display:flex}
+.success-check{width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,.15);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:28px;animation:popIn .4s ease}
+@keyframes popIn{0%{transform:scale(0);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.success-text{margin-top:12px;font-family:'Space Mono',monospace;font-size:13px;color:var(--g);letter-spacing:1px;animation:fadeUp .4s ease .2s forwards;opacity:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="hdr-top"><div><h1>REGISTRO ESTOQUE</h1><div class="sub">Silvicultura - Controle Diario</div></div><div style="display:flex;align-items:center;gap:6px"><div id="seasonInfo"></div><button onclick="openCfg()" style="background:0;border:1px solid var(--bd);color:var(--t3);padding:4px 8px;border-radius:5px;cursor:pointer;font-size:10px">CFG</button></div></div></div>
+<div class="mn">
+<div class="div-sel"><div class="div-btn on" id="dv0" onclick="selDiv(0)"><div class="dv-name">Agua Clara</div><div class="dv-loc">MS - ACL</div></div><div class="div-btn" id="dv1" onclick="selDiv(1)"><div class="dv-name">Bataguassu</div><div class="dv-loc">MS - BTG</div></div></div>
+<div class="date-bar"><label>Data</label><input type="date" class="date-inp" id="regDate" onchange="checkDate()"></div>
+<div class="date-warn" id="dateWarn">ATENCAO: Data diferente de hoje! Confirme se deseja registrar para outra data.</div>
+<div class="stats"><div class="stat s-c"><div class="stat-v" id="stTotal">0</div><div class="stat-l">Materiais</div></div><div class="stat s-g"><div class="stat-v" id="stFilled">0</div><div class="stat-l">Selecionados</div></div><div class="stat s-p"><div class="stat-v" id="stPend">0</div><div class="stat-l">Pendentes</div></div></div>
+<div class="search-bar"><input type="text" id="srcQ" placeholder="Buscar material ou SAP..." oninput="renderMats()"></div>
+<div class="add-bar" onclick="openAddMat()">+ ADICIONAR NOVO MATERIAL</div>
+<div class="st2">MATERIAIS</div>
+<div class="mat-grid" id="matGrid"></div>
+<div class="sig">Feito por <span>Lucas Marques</span></div>
+</div>
+<div class="bot-bar"><div class="bot-inner"><button class="btn b-send" id="btnSend" onclick="sendToSheets()">REGISTRAR VIA SISTEMA</button><div class="btn-row"><button class="b-clear" onclick="clearAll()">X</button><button class="btn b-whats" id="btnWhats" onclick="sendWhats()" disabled>REGISTRAR VIA WHATSAPP</button></div></div></div>
+<div class="mbg" id="mBg" onclick="if(event.target===this)closeMdl()"><div class="mdl" id="mC"></div></div>
+<div class="success-overlay" id="succOv"><div class="success-check">OK</div><div class="success-text">DADOS ENVIADOS!</div></div>
+<div class="toast" id="tt"></div>
+<script>
+const GRPS=['Insumo','Insumo Bloqueado','Insumo Vencido','Uso e Consumo','Fertilizantes'];
+const DIVS=['Agua Clara MS','Bataguassu MS'];
+const SEASONS=[{t:['Plantio','Chuva'],c:['st-plant','st-rain']},{t:['Plantio','Chuva'],c:['st-plant','st-rain']},{t:['Chuva'],c:['st-rain']},{t:['Pragas'],c:['st-pest']},{t:['Pragas','Formiga'],c:['st-pest','st-pest']},{t:['Formiga'],c:['st-pest']},{t:['Formiga'],c:['st-pest']},{t:['Manutencao'],c:['st-maint']},{t:['Manutencao'],c:['st-maint']},{t:['Preparo'],c:['st-maint']},{t:['Plantio'],c:['st-plant']},{t:['Plantio','Chuva'],c:['st-plant','st-rain']}];
+const APPS_URL='https://script.google.com/macros/s/AKfycbz8BnLnQxuPqxYC8Y36vbv1pCLjc5RouhYAbR2Wdth2cDOaKmd3iRqLnP3X53uC6hEAFg/exec';
+let mats=[],selDivIdx=0,vals={},checks={},sent=false;
+function defaultMats(){return[
+{id:1,sap:'90000769',g:'Insumo',m:'Agile / Missil',u:'L'},{id:2,sap:'90000791',g:'Insumo',m:'Outliner',u:'L'},{id:3,sap:'90000776',g:'Insumo',m:'Topinan',u:'L'},{id:4,sap:'90000748',g:'Insumo',m:'Glifosato',u:'KG'},{id:5,sap:'90000815',g:'Insumo',m:'Esplanade',u:'L'},{id:6,sap:'90000775',g:'Insumo',m:'Sumizyn / Osbar',u:'KG'},{id:7,sap:'90000749',g:'Insumo',m:'Sunward / Distinto',u:'KG'},{id:8,sap:'90000774',g:'Insumo',m:'Fipronil',u:'KG'},{id:9,sap:'70000138',g:'Insumo',m:'Isca Dinagro',u:'KG'},{id:10,sap:'90000761',g:'Insumo',m:'Isca Landrin',u:'KG'},{id:11,sap:'90000834',g:'Insumo',m:'Isca Sulfluramida',u:'KG'},{id:12,sap:'90000822',g:'Insumo',m:'Oleo Mineral',u:'L'},{id:13,sap:'90000821',g:'Insumo',m:'Gel Polimero',u:'KG'},{id:14,sap:'90000804',g:'Fertilizantes',m:'Map',u:'KG'},{id:15,sap:'90000811',g:'Insumo',m:'Decis',u:'L'},{id:16,sap:'90000784',g:'Insumo',m:'Dipel',u:'L'},{id:17,sap:'90000763',g:'Insumo',m:'Prez / Terminus',u:'KG'},{id:18,sap:'90000783',g:'Insumo',m:'Actara / Warrant',u:'KG'},{id:19,sap:'90000782',g:'Fertilizantes',m:'Boro',u:'KG'},{id:20,sap:'90000820',g:'Insumo',m:'Nativo',u:'L'},{id:21,sap:'90000809',g:'Insumo',m:'Comet',u:'L'},{id:22,sap:'90000812',g:'Insumo',m:'Isca Mirex',u:'KG'},{id:23,sap:'90000793',g:'Insumo',m:'Valeos',u:'KG'},{id:24,sap:'90000792',g:'Insumo',m:'Solara / Ponteiro',u:'L'},{id:25,sap:'90000768',g:'Insumo',m:'Block / Goal',u:'L'},{id:26,sap:'90000780',g:'Insumo',m:'Falcon',u:'L'}]}
+function init(){
+  document.getElementById('regDate').value=new Date().toISOString().split('T')[0];
+  const cm=new Date().getMonth(),si=SEASONS[cm];
+  document.getElementById('seasonInfo').innerHTML=si.t.map((t,i)=>'<span class="season-tag '+si.c[i]+'">'+t+'</span>').join('');
+  const saved=JSON.parse(localStorage.getItem('re2_mats')||'null');
+  mats=saved||defaultMats();
+  const draft=JSON.parse(localStorage.getItem('re2_draft')||'{}');
+  if(draft.vals)vals=draft.vals;if(draft.checks)checks=draft.checks;if(draft.div!==undefined)selDivIdx=draft.div;
+  sent=false;updateBtns();renderMats();updateDivUI();
+}
+function selDiv(i){selDivIdx=i;updateDivUI();saveDraft()}
+function updateDivUI(){document.getElementById('dv0').className='div-btn'+(selDivIdx===0?' on':'');document.getElementById('dv1').className='div-btn'+(selDivIdx===1?' on':'')}
+function checkDate(){const dt=document.getElementById('regDate').value;const today=new Date().toISOString().split('T')[0];document.getElementById('dateWarn').className='date-warn'+(dt!==today?' show':'')}
+function grpOpts(sel){return GRPS.map(g=>'<option'+(g===sel?' selected':'')+'>'+g+'</option>').join('')}
+function renderMats(){
+  const q=(document.getElementById('srcQ')?.value||'').toLowerCase();
+  let filtered=mats.filter(m=>!q||m.m.toLowerCase().includes(q)||m.sap.includes(q)||m.g.toLowerCase().includes(q));
+  filtered.sort((a,b)=>a.g.localeCompare(b.g)||a.m.localeCompare(b.m));
+  let lastG='',html='';
+  filtered.forEach(m=>{
+    if(m.g!==lastG){lastG=m.g;html+='<div class="grp-hdr">'+m.g+'</div>'}
+    const v=vals[m.id]||'',ck=!!checks[m.id],hasV=v!==''&&+v>0;
+    html+='<div class="mat-card'+(ck?' checked':'')+'"><input type="checkbox" class="mat-chk" '+(ck?'checked':'')+' onchange="toggleChk('+m.id+',this.checked)"><div class="mat-info"><div class="mat-name">'+m.m+'</div><div class="mat-meta"><span class="sap">'+m.sap+'</span><span class="mat-unit">'+m.u+'</span><select class="grp-sel" onchange="chgGrp('+m.id+',this.value)">'+grpOpts(m.g)+'</select></div></div><input type="number" class="mat-input'+(hasV?' filled':'')+'" inputmode="numeric" value="'+v+'" placeholder="0" onchange="setVal('+m.id+',this.value)" onfocus="this.select()"></div>';
+  });
+  document.getElementById('matGrid').innerHTML=html;updateStats();
+}
+function toggleChk(id,v){if(v)checks[id]=true;else delete checks[id];saveDraft();renderMats()}
+function setVal(id,v){const n=parseFloat(v);if(isNaN(n)||n<=0)delete vals[id];else vals[id]=n;sent=false;updateBtns();saveDraft()}
+function chgGrp(id,g){const m=mats.find(x=>x.id===id);if(m){m.g=g;localStorage.setItem('re2_mats',JSON.stringify(mats));renderMats()}}
+function updateStats(){const total=mats.length,filled=Object.keys(checks).filter(k=>checks[k]).length;document.getElementById('stTotal').textContent=total;document.getElementById('stFilled').textContent=filled;document.getElementById('stPend').textContent=total-filled}
+function updateBtns(){document.getElementById('btnSend').disabled=false;document.getElementById('btnWhats').disabled=!sent}
+function saveDraft(){localStorage.setItem('re2_draft',JSON.stringify({vals,checks,div:selDivIdx}))}
+function clearAll(){if(!confirm('Limpar todos os valores e selecoes?'))return;vals={};checks={};sent=false;updateBtns();saveDraft();renderMats();toast('Limpo!')}
+function openAddMat(){document.getElementById('mC').innerHTML='<button class="mc" onclick="closeMdl()">X</button><h3>NOVO MATERIAL</h3><div class="fg"><label class="fl">Codigo SAP</label><input class="fi" id="nSap" placeholder="90000XXX"></div><div class="fg"><label class="fl">Nome</label><input class="fi" id="nNome"></div><div class="fg"><label class="fl">Grupo</label><select class="fi" id="nGrp">'+grpOpts('Insumo')+'</select></div><div class="fg"><label class="fl">Unidade</label><select class="fi" id="nUn"><option>KG</option><option>L</option><option>UN</option></select></div><div style="display:flex;gap:8px;margin-top:14px"><button class="btn-sm btn-ac" onclick="addMat()">Adicionar</button><button class="btn-sm btn-sec" onclick="closeMdl()">Cancelar</button></div>';document.getElementById('mBg').classList.add('open')}
+function addMat(){const sap=document.getElementById('nSap').value.trim(),nome=document.getElementById('nNome').value.trim(),grp=document.getElementById('nGrp').value,un=document.getElementById('nUn').value;if(!sap||!nome){toast('Preencha codigo e nome','err');return}if(mats.find(m=>m.sap===sap)){toast('SAP ja existe','err');return}const id=Math.max(0,...mats.map(m=>m.id))+1;mats.push({id,sap,g:grp,m:nome,u:un});localStorage.setItem('re2_mats',JSON.stringify(mats));closeMdl();toast('Material adicionado!');renderMats()}
+function openCfg(){const cfg=JSON.parse(localStorage.getItem('re2_cfg')||'{}');document.getElementById('mC').innerHTML='<button class="mc" onclick="closeMdl()">X</button><h3>CONFIGURACAO</h3><div class="fg"><label class="fl">URL Apps Script</label><input class="fi" id="cfgUrl" value="'+(cfg.url||APPS_URL)+'"></div><div class="fg"><label class="fl">WhatsApp Numero</label><input class="fi" id="cfgWhats" value="'+(cfg.whats||'')+'" placeholder="5567999999999"></div><div style="display:flex;gap:8px;margin-top:14px"><button class="btn-sm btn-ac" onclick="saveCfg()">Salvar</button><button class="btn-sm btn-sec" onclick="closeMdl()">Cancelar</button></div>';document.getElementById('mBg').classList.add('open')}
+function saveCfg(){const cfg={url:document.getElementById('cfgUrl').value.trim()||APPS_URL,whats:document.getElementById('cfgWhats').value.trim()};localStorage.setItem('re2_cfg',JSON.stringify(cfg));closeMdl();toast('Salvo!')}
+function closeMdl(){document.getElementById('mBg').classList.remove('open')}
+async function sendToSheets(){
+  const cfg=JSON.parse(localStorage.getItem('re2_cfg')||'{}'),url=cfg.url||APPS_URL;
+  const cIds=Object.keys(checks).filter(k=>checks[k]);
+  if(!cIds.length){toast('Selecione ao menos um material','err');return}
+  const dt=document.getElementById('regDate').value;if(!dt){toast('Selecione a data','err');return}
+  const div=DIVS[selDivIdx],btn=document.getElementById('btnSend');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Enviando...';
+  const rows=cIds.map(id=>{const m=mats.find(x=>x.id===+id);return[dt,div,m.sap,m.m,vals[+id]||0]});
+  try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows})});
+    btn.innerHTML='REGISTRAR VIA SISTEMA';btn.disabled=false;sent=true;updateBtns();showSuccess();
+    const hist=JSON.parse(localStorage.getItem('re2_hist')||'[]');hist.unshift({dt,div,count:rows.length,ts:Date.now()});if(hist.length>50)hist.length=50;localStorage.setItem('re2_hist',JSON.stringify(hist));
+  }catch(e){btn.innerHTML='REGISTRAR VIA SISTEMA';btn.disabled=false;toast('Erro: '+e.message,'err')}
+}
+function showSuccess(){const ov=document.getElementById('succOv');ov.classList.add('show');setTimeout(()=>ov.classList.remove('show'),2000)}
+function sendWhats(){
+  if(!sent){toast('Registre via Sistema primeiro','wrn');return}
+  const cIds=Object.keys(checks).filter(k=>checks[k]);if(!cIds.length)return;
+  const dt=document.getElementById('regDate').value,div=DIVS[selDivIdx];
+  let msg='REGISTRO ESTOQUE DIARIO\nData: '+dt+'\nDivisao: '+div+'\n\n';
+  const byG={};cIds.forEach(id=>{const m=mats.find(x=>x.id===+id),qtd=vals[+id]||0;if(!byG[m.g])byG[m.g]=[];byG[m.g].push({m,qtd})});
+  Object.entries(byG).forEach(([g,items])=>{msg+='['+g.toUpperCase()+']\n';items.forEach(({m,qtd})=>{msg+='- '+m.sap+' | '+m.m+': '+Number(qtd).toLocaleString('pt-BR')+' '+m.u+'\n'});msg+='\n'});
+  msg+='Total: '+cIds.length+' materiais\nSistema Gestao Silvicultura';
+  const cfg=JSON.parse(localStorage.getItem('re2_cfg')||'{}'),num=cfg.whats||'';
+  window.open(num?'https://wa.me/'+num+'?text='+encodeURIComponent(msg):'https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+  setTimeout(()=>{vals={};checks={};sent=false;updateBtns();saveDraft();renderMats();toast('Ciclo concluido! Dados limpos.')},1500);
+}
+function toast(m,type){const t=document.getElementById('tt');t.textContent=m;t.className='toast sh'+(type==='err'?' err':type==='wrn'?' wrn':'');setTimeout(()=>t.className='toast',2500)}
+init();
+</script>
+</body>
+</html>
